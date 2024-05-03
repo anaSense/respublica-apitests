@@ -1,0 +1,226 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "success": {
+      "type": "boolean"
+    },
+    "token": {
+      "type": "string"
+    },
+    "user": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "attributes": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "wishlist_id": {
+                  "type": "null"
+                },
+                "email_verified": {
+                  "type": "boolean"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "first_name": {
+                  "type": "string"
+                },
+                "last_name": {
+                  "type": "string"
+                },
+                "birthday": {
+                  "type": "string"
+                },
+                "is_subscribed": {
+                  "type": "boolean"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "phone_verified": {
+                  "type": "boolean"
+                },
+                "avatar": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "big": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "url"
+                      ]
+                    },
+                    "thumb": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "url"
+                      ]
+                    },
+                    "small": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "url"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "url",
+                    "big",
+                    "thumb",
+                    "small"
+                  ]
+                },
+                "role": {
+                  "type": "null"
+                },
+                "orders_count": {
+                  "type": "integer"
+                },
+                "wishes_count": {
+                  "type": "integer"
+                },
+                "reviews_count": {
+                  "type": "integer"
+                },
+                "wishlist_shared": {
+                  "type": "boolean"
+                },
+                "cart_id": {
+                  "type": "integer"
+                },
+                "addresses": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {}
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                },
+                "receivers": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "attributes": {
+                              "type": "object",
+                              "properties": {
+                                "title": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "email": {
+                                  "type": "string"
+                                },
+                                "phone": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "title",
+                                "name",
+                                "email",
+                                "phone"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "type",
+                            "attributes"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              },
+              "required": [
+                "email",
+                "wishlist_id",
+                "email_verified",
+                "name",
+                "first_name",
+                "last_name",
+                "birthday",
+                "is_subscribed",
+                "phone",
+                "phone_verified",
+                "avatar",
+                "role",
+                "orders_count",
+                "wishes_count",
+                "reviews_count",
+                "wishlist_shared",
+                "cart_id",
+                "addresses",
+                "receivers"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "attributes"
+          ]
+        }
+      },
+      "required": [
+        "data"
+      ]
+    }
+  },
+  "required": [
+    "success",
+    "token",
+    "user"
+  ]
+}

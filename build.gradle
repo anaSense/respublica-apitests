@@ -38,7 +38,8 @@ dependencies {
             'org.slf4j:slf4j-simple:2.0.13',
             'com.jayway.jsonpath:json-path:2.9.0',
             'org.assertj:assertj-core:3.25.3',
-            'org.aeonbits.owner:owner:1.0.4'
+            'org.aeonbits.owner:owner:1.0.4',
+            'com.github.javafaker:javafaker:1.0.2'
     )
 }
 
