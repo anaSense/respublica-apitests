@@ -13,8 +13,8 @@ import utils.RandomUtils;
 
 import java.util.List;
 
-import static helpers.TestDataConstants.BAD_REQUEST_ERROR;
-import static helpers.TestDataConstants.UNAUTHORIZED_ERROR;
+import static data.TestDataConstants.BAD_REQUEST_ERROR;
+import static data.TestDataConstants.UNAUTHORIZED_ERROR;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;

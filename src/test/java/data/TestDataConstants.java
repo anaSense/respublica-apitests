@@ -1,4 +1,4 @@
-package helpers;
+package data;
 
 public class TestDataConstants {
     public static final String VALID_ITEM_ID = "521935",
