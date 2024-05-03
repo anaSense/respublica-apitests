@@ -1,8 +1,8 @@
 package helpers;
 
-import models.AuthBodyModel;
-import models.AuthResponseModel;
-import models.UserBodyModel;
+import models.bodies.AuthBodyModel;
+import models.responses.AuthResponseModel;
+import models.bodies.UserBodyModel;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;

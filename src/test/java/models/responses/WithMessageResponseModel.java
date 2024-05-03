@@ -1,6 +1,7 @@
-package models;
+package models.responses;
 
 import lombok.Data;
+import models.ActionsWithWish;
 
 @Data
 public class WithMessageResponseModel {

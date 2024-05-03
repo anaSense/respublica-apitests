@@ -2,6 +2,9 @@ package tests;
 
 import io.qameta.allure.*;
 import models.*;
+import models.responses.AuthResponseModel;
+import models.responses.ErrorResponseModel;
+import models.responses.WithMessageResponseModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

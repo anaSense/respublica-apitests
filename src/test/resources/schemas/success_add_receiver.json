@@ -42,7 +42,7 @@
                   "type": "string"
                 },
                 "birthday": {
-                  "type": "string"
+                  "type": "null"
                 },
                 "is_subscribed": {
                   "type": "boolean"

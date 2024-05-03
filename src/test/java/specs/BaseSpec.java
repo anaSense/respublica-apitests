@@ -21,7 +21,6 @@ public class BaseSpec {
 
     public static RequestSpecification baseRequestWithTokenSpec = with()
             .filter(withCustomTemplates())
-//            .header("JWT-Auth-Token", System.getProperty("authToken"))
             .log().uri()
             .log().method()
             .log().body()

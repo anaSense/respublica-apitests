@@ -1,22 +1,25 @@
 package tests;
 
+import config.AuthConfig;
+import config.BaseConfigProvider;
 import helpers.AuthToken;
 import io.restassured.RestAssured;
-import models.AuthResponseModel;
+import models.responses.AuthResponseModel;
+import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.BeforeAll;
-
-import static helpers.AuthTestDataConstants.AUTH_EMAIL;
-import static helpers.AuthTestDataConstants.AUTH_PASSWORD;
 
 
 public class TestBase {
 
+    static private BaseConfigProvider configProvider = new BaseConfigProvider();
+
     @BeforeAll
     public static void beforeAll() {
-        RestAssured.baseURI = "https://api.respublica.ru";
-        RestAssured.basePath = "/api";
-        AuthResponseModel responce = AuthToken.getAuthDataResponse(AUTH_EMAIL,
-                AUTH_PASSWORD);
+        configProvider.configure();
+        AuthConfig authConfig = ConfigFactory.create(AuthConfig.class, System.getProperties());
+
+        AuthResponseModel responce = AuthToken.getAuthDataResponse(authConfig.email(),
+                authConfig.password());
         System.setProperty("authToken", responce.getToken());
     }
 }
