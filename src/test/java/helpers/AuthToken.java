@@ -18,14 +18,7 @@ public class AuthToken {
         user.setPassword(password);
         model.setUser(user);
 
-        AuthResponseModel response = step("Log in", () ->
-                given(baseRequestSpec)
-                        .body(model)
-                        .when()
-                        .post("/v1/users/login")
-                        .then()
-                        .spec(baseSuccessResponseSpec)
-                        .extract().as(AuthResponseModel.class));
+        AuthResponseModel response = step("Log in", () -> given(baseRequestSpec).body(model).when().post("/v1/users/login").then().spec(baseSuccessResponseSpec).extract().as(AuthResponseModel.class));
         assertThat(response.getToken()).isNotNull();
         return response;
     }

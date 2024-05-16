@@ -28,77 +28,43 @@ public class WishlistApiTests extends TestBase {
     void successfullyAddItemToWishlistTest() {
         boolean isExist = checkIsItemWithIdExistInWishlist(VALID_ITEM_ID);
 
-        if(isExist) {
-            step(format("Prepare for test, remove item %s from wishlist, if exist",
-                    VALID_ITEM_ID), () ->
-                given(baseRequestWithTokenSpec)
-                        .header("JWT-Auth-Token", System.getProperty("authToken"))
-                        .when()
-                        .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID)
-                        .then()
-                        .spec(baseSuccessResponseSpec));
+        if (isExist) {
+            step(format("Prepare for testing, remove item %s from wishlist if it exist", VALID_ITEM_ID), () -> given(baseRequestWithTokenSpec).header("JWT-Auth-Token", System.getProperty("authToken")).when().get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID).then().spec(baseSuccessResponseSpec));
         }
 
-        WithMessageResponseModel response = step(format("Add item with id %s " +
-                    "to wishlist", VALID_ITEM_ID), () ->
-                given(baseRequestWithTokenSpec)
-                        .header("JWT-Auth-Token", System.getProperty("authToken"))
-                        .when()
-                        .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID)
-                        .then()
-                        .spec(baseSuccessResponseSpec)
-                        .extract().as(WithMessageResponseModel.class));
+        WithMessageResponseModel response = step(format("Add item with id %s " + "to wishlist", VALID_ITEM_ID), () -> given(baseRequestWithTokenSpec).header("JWT-Auth-Token", System.getProperty("authToken")).when().get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID).then().spec(baseSuccessResponseSpec).extract().as(WithMessageResponseModel.class));
 
-            step("Сheck that the request to add item to wishlist was successful", () -> {
-                        assertThat(response.isSuccess()).isTrue();
-                        assertThat(response.getAction()).isEqualTo(ActionsWithWish.ADD_TO_WISHLIST);
-            });
+        step("Сheck that the request to add item to wishlist was successful", () -> {
+            assertThat(response.isSuccess()).isTrue();
+            assertThat(response.getAction()).isEqualTo(ActionsWithWish.ADD_TO_WISHLIST);
+        });
 
-            boolean isExistAfterAdd = step("Get all items from wishlist", () ->
-                    checkIsItemWithIdExistInWishlist(VALID_ITEM_ID));
+        boolean isExistAfterAdd = step("Get all items from wishlist", () -> checkIsItemWithIdExistInWishlist(VALID_ITEM_ID));
 
-        step(format("Сheck that item with id %s is in wishlist", VALID_ITEM_ID), () ->
-                assertThat(isExistAfterAdd).isTrue());
+        step(format("Сheck that item with id %s is in wishlist", VALID_ITEM_ID), () -> assertThat(isExistAfterAdd).isTrue());
     }
 
 
     @Test
     @Severity(SeverityLevel.CRITICAL)
-    @DisplayName("Successfully remove item from wishlist")
+    @DisplayName("Successful removal of item from wishlist")
     void successfullyRemoveItemFromWishlistTest() {
         boolean isExist = checkIsItemWithIdExistInWishlist(VALID_ITEM_ID_2);
 
-        if(!isExist) {
-            step(format("Prepare for test, add item %s to wishlist, if no",
-                    VALID_ITEM_ID_2), () ->
-                    given(baseRequestWithTokenSpec)
-                            .header("JWT-Auth-Token", System.getProperty("authToken"))
-                            .when()
-                            .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID_2)
-                            .then()
-                            .spec(baseSuccessResponseSpec));
+        if (!isExist) {
+            step(format("Prepare for testing, add item %s to wishlist if not already present", VALID_ITEM_ID_2), () -> given(baseRequestWithTokenSpec).header("JWT-Auth-Token", System.getProperty("authToken")).when().get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID_2).then().spec(baseSuccessResponseSpec));
         }
 
-        WithMessageResponseModel response = step(format("Remove item with id %s " +
-                "from wishlist", VALID_ITEM_ID_2), () ->
-                given(baseRequestWithTokenSpec)
-                        .header("JWT-Auth-Token", System.getProperty("authToken"))
-                        .when()
-                        .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID_2)
-                        .then()
-                        .spec(baseSuccessResponseSpec)
-                        .extract().as(WithMessageResponseModel.class));
+        WithMessageResponseModel response = step(format("Remove item with id %s " + "from wishlist", VALID_ITEM_ID_2), () -> given(baseRequestWithTokenSpec).header("JWT-Auth-Token", System.getProperty("authToken")).when().get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID_2).then().spec(baseSuccessResponseSpec).extract().as(WithMessageResponseModel.class));
 
         step("Сheck that the request to remove item from wishlist was successful", () -> {
             assertThat(response.isSuccess()).isTrue();
             assertThat(response.getAction()).isEqualTo(ActionsWithWish.REMOVE_FROM_WISHLIST);
         });
 
-        boolean isExistAfterAdd = step("Get all items from wishlist", () ->
-                checkIsItemWithIdExistInWishlist(VALID_ITEM_ID_2));
+        boolean isExistAfterAdd = step("Get all items from wishlist", () -> checkIsItemWithIdExistInWishlist(VALID_ITEM_ID_2));
 
-        step(format("Сheck that item with id %s is not in wishlist", VALID_ITEM_ID_2), () ->
-                assertThat(isExistAfterAdd).isFalse());
+        step(format("Сheck that item with id %s is not in wishlist", VALID_ITEM_ID_2), () -> assertThat(isExistAfterAdd).isFalse());
     }
 
 
@@ -106,82 +72,46 @@ public class WishlistApiTests extends TestBase {
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Failed to add item with non-existent id to wishlist")
     void failedAddToWishlistWithNonexistentItemIdTest() {
-        WithMessageResponseModel errorResponseModel = step(format("Try to add item with id %s " +
-                "to wishlist", INVALID_ITEM_ID), () ->
-                given(baseRequestWithTokenSpec)
-                        .header("JWT-Auth-Token", System.getProperty("authToken"))
-                        .when()
-                        .get("/v1/account/wishes/add_or_remove_wish_item/" + INVALID_ITEM_ID)
-                        .then()
-                        .spec(baseResponseNotFoundErrorSpec)
-                        .extract().as(WithMessageResponseModel.class));
+        WithMessageResponseModel errorResponseModel = step(format("Try to add item with id %s " + "to wishlist", INVALID_ITEM_ID), () -> given(baseRequestWithTokenSpec).header("JWT-Auth-Token", System.getProperty("authToken")).when().get("/v1/account/wishes/add_or_remove_wish_item/" + INVALID_ITEM_ID).then().spec(baseResponseNotFoundErrorSpec).extract().as(WithMessageResponseModel.class));
 
         step("Сheck that the error was shown", () -> {
             assertThat(errorResponseModel.isSuccess()).isFalse();
-            assertThat(errorResponseModel.getMessage())
-                    .isEqualTo(ITEM_NOT_FOUND_ERROR);
+            assertThat(errorResponseModel.getMessage()).isEqualTo(ITEM_NOT_FOUND_ERROR);
         });
     }
 
 
     @Test
     @Severity(SeverityLevel.NORMAL)
-    @DisplayName("Check response schema for successfully add item to  wishlist")
+    @DisplayName("Check the response schema for successfully adding an item to the wishlist")
     void checkSuccessAddToWishlistSchemaTest() {
-        step("Check schema of request", () ->
-                given(baseRequestWithTokenSpec)
-                        .header("JWT-Auth-Token", System.getProperty("authToken"))
-                        .when()
-                        .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID_2)
-                        .then()
-                        .spec(baseSuccessResponseSpec)
-                        .body(matchesJsonSchemaInClasspath(
-                                "schemas/success_add_remove_wishlist.json")));
+        step("Check schema of request", () -> given(baseRequestWithTokenSpec).header("JWT-Auth-Token", System.getProperty("authToken")).when().get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID_2).then().spec(baseSuccessResponseSpec).body(matchesJsonSchemaInClasspath("schemas/success_add_remove_wishlist.json")));
     }
 
     @Test
     @Severity(SeverityLevel.CRITICAL)
     @DisplayName("Failed to add item to wishlist without token")
     void failedAddToWishlistWithoutTokenTest() {
-        WithMessageResponseModel errorResponseModel = step(format("Try to add item with id %s " +
-                "to wishlist", VALID_ITEM_ID), () ->
-                given(baseRequestWithTokenSpec)
-                        .when()
-                        .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID)
-                        .then()
-                        .spec(baseResponseUnauthorizedErrorSpec)
-                        .extract().as(WithMessageResponseModel.class));
+        WithMessageResponseModel errorResponseModel = step(format("Try to add item with id %s " + "to wishlist", VALID_ITEM_ID), () -> given(baseRequestWithTokenSpec).when().get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID).then().spec(baseResponseUnauthorizedErrorSpec).extract().as(WithMessageResponseModel.class));
 
         step("Сheck that the unauthorized error was shown", () -> {
             assertThat(errorResponseModel.isSuccess()).isFalse();
-            assertThat(errorResponseModel.getMessage())
-                    .isEqualTo(UNAUTHORIZED_ERROR);
+            assertThat(errorResponseModel.getMessage()).isEqualTo(UNAUTHORIZED_ERROR);
         });
     }
 
     private boolean checkIsItemWithIdExistInWishlist(String id) {
-        return step(format("Prepare for test, find item %s from wishlist",
-                id), () -> {
+        return step(format("Prepare for testing, find item %s in the wishlist", id), () -> {
             List<ItemModel> items = new ArrayList<ItemModel>();
             int page = 1;
             while (true) {
-                GetWishlistResponseModel response =
-                        given(baseRequestWithTokenSpec)
-                                .params("page", page)
-                                .header("JWT-Auth-Token", System.getProperty("authToken"))
-                                .when()
-                                .get("/v1/account/wishes")
-                                .then()
-                                .spec(baseSuccessResponseSpec)
-                                .extract().as(GetWishlistResponseModel.class);
+                GetWishlistResponseModel response = given(baseRequestWithTokenSpec).params("page", page).header("JWT-Auth-Token", System.getProperty("authToken")).when().get("/v1/account/wishes").then().spec(baseSuccessResponseSpec).extract().as(GetWishlistResponseModel.class);
                 items.addAll(response.getItemDataModel().getItems());
                 page++;
-                if (response.getPagination().getNext() == 0)
-                    break;
+                if (response.getPagination().getNext() == 0) break;
             }
-            for(ItemModel item : items) {
-                if(item.getId().equals(id))
-                    return true;
+            for (ItemModel item : items) {
+                if (item.getId().equals(id)) return true;
             }
             return false;
         });

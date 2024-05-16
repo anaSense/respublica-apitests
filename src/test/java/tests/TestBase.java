@@ -18,8 +18,7 @@ public class TestBase {
         configProvider.configure();
         AuthConfig authConfig = ConfigFactory.create(AuthConfig.class, System.getProperties());
 
-        AuthResponseModel responce = AuthToken.getAuthDataResponse(authConfig.email(),
-                authConfig.password());
+        AuthResponseModel responce = AuthToken.getAuthDataResponse(authConfig.email(), authConfig.password());
         System.setProperty("authToken", responce.getToken());
     }
 }

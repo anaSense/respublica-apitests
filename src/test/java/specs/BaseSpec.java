@@ -11,43 +11,15 @@ import static io.restassured.RestAssured.with;
 
 public class BaseSpec {
 
-    public static RequestSpecification baseRequestSpec = with()
-            .filter(withCustomTemplates())
-            .log().uri()
-            .log().method()
-            .log().body()
-            .log().headers()
-            .contentType(ContentType.JSON);
+    public static RequestSpecification baseRequestSpec = with().filter(withCustomTemplates()).log().uri().log().method().log().body().log().headers().contentType(ContentType.JSON);
 
-    public static RequestSpecification baseRequestWithTokenSpec = with()
-            .filter(withCustomTemplates())
-            .log().uri()
-            .log().method()
-            .log().body()
-            .log().headers()
-            .contentType(ContentType.JSON);
+    public static RequestSpecification baseRequestWithTokenSpec = with().filter(withCustomTemplates()).log().uri().log().method().log().body().log().headers().contentType(ContentType.JSON);
 
-    public static ResponseSpecification baseSuccessResponseSpec = new ResponseSpecBuilder()
-            .expectStatusCode(200)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
-            .build();
+    public static ResponseSpecification baseSuccessResponseSpec = new ResponseSpecBuilder().expectStatusCode(200).log(LogDetail.STATUS).log(LogDetail.BODY).build();
 
-    public static ResponseSpecification baseResponseWithBadRequestErrorSpec = new ResponseSpecBuilder()
-            .expectStatusCode(400)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
-            .build();
+    public static ResponseSpecification baseResponseWithBadRequestErrorSpec = new ResponseSpecBuilder().expectStatusCode(400).log(LogDetail.STATUS).log(LogDetail.BODY).build();
 
-    public static ResponseSpecification baseResponseUnauthorizedErrorSpec = new ResponseSpecBuilder()
-            .expectStatusCode(401)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
-            .build();
+    public static ResponseSpecification baseResponseUnauthorizedErrorSpec = new ResponseSpecBuilder().expectStatusCode(401).log(LogDetail.STATUS).log(LogDetail.BODY).build();
 
-    public static ResponseSpecification baseResponseNotFoundErrorSpec = new ResponseSpecBuilder()
-            .expectStatusCode(404)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
-            .build();
+    public static ResponseSpecification baseResponseNotFoundErrorSpec = new ResponseSpecBuilder().expectStatusCode(404).log(LogDetail.STATUS).log(LogDetail.BODY).build();
 }

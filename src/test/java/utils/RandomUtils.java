@@ -12,6 +12,7 @@ public class RandomUtils {
         return faker.harryPotter().spell();
         //return faker.lorem().characters(5,10);
     }
+
     public String getName() {
         return faker.name().firstName();
     }

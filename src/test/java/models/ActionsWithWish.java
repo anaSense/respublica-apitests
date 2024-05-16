@@ -7,10 +7,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ActionsWithWish {
-    ADD_TO_WISHLIST("add"),
-    REMOVE_FROM_WISHLIST("remove");
+    ADD_TO_WISHLIST("add"), REMOVE_FROM_WISHLIST("remove");
 
     private final String value;
+
     @JsonValue
     public String getValue() {
         return value;
