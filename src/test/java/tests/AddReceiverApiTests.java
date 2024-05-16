@@ -41,7 +41,7 @@ public class AddReceiverApiTests extends TestBase {
 
         AuthResponseModel response = step("Add new receiver to profile", () -> {
             AuthResponseModel responseModel =
-                    given(baseRequestWithTokenSpec)
+                    given(baseRequestSpec)
                             .body(model)
                             .header("JWT-Auth-Token", System.getProperty("authToken"))
                             .when()
@@ -78,7 +78,7 @@ public class AddReceiverApiTests extends TestBase {
         AddReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
 
         WithMessageResponseModel response = step("Try to add new receiver to profile", () ->
-                given(baseRequestWithTokenSpec).body(model)
+                given(baseRequestSpec).body(model)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()
                         .post("/v1/account/receivers")
@@ -99,7 +99,7 @@ public class AddReceiverApiTests extends TestBase {
         AddReceiverBodyModel model = new AddReceiverBodyModel();
 
         ErrorResponseModel response = step("Try to add new receiver to profile", () ->
-                given(baseRequestWithTokenSpec)
+                given(baseRequestSpec)
                         .body(model)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()
@@ -125,7 +125,7 @@ public class AddReceiverApiTests extends TestBase {
         AddReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
 
         WithMessageResponseModel response = step("Try to add new receiver to profile", () ->
-                given(baseRequestWithTokenSpec)
+                given(baseRequestSpec)
                         .body(model)
                         .when()
                         .post("/v1/account/receivers")
@@ -150,7 +150,7 @@ public class AddReceiverApiTests extends TestBase {
         AddReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
 
         step("Check schema of request", () ->
-                given(baseRequestWithTokenSpec)
+                given(baseRequestSpec)
                         .body(model)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()

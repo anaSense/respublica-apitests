@@ -30,7 +30,7 @@ public class WishlistApiTests extends TestBase {
 
         if (isExist) {
             step(format("Prepare for testing, remove item %s from wishlist if it exist", VALID_ITEM_ID), () ->
-                    given(baseRequestWithTokenSpec)
+                    given(baseRequestSpec)
                             .header("JWT-Auth-Token", System.getProperty("authToken"))
                             .when()
                             .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID)
@@ -39,7 +39,7 @@ public class WishlistApiTests extends TestBase {
         }
 
         WithMessageResponseModel response = step(format("Add item with id %s " + "to wishlist", VALID_ITEM_ID), () ->
-                given(baseRequestWithTokenSpec)
+                given(baseRequestSpec)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()
                         .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID)
@@ -66,7 +66,7 @@ public class WishlistApiTests extends TestBase {
 
         if (!isExist) {
             step(format("Prepare for testing, add item %s to wishlist if not already present", VALID_ITEM_ID_2), () ->
-                    given(baseRequestWithTokenSpec)
+                    given(baseRequestSpec)
                             .header("JWT-Auth-Token", System.getProperty("authToken"))
                             .when()
                             .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID_2)
@@ -75,7 +75,7 @@ public class WishlistApiTests extends TestBase {
         }
 
         WithMessageResponseModel response = step(format("Remove item with id %s " + "from wishlist", VALID_ITEM_ID_2), () ->
-                given(baseRequestWithTokenSpec)
+                given(baseRequestSpec)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()
                         .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID_2)
@@ -99,7 +99,7 @@ public class WishlistApiTests extends TestBase {
     @DisplayName("Failed to add item with non-existent id to wishlist")
     void failedAddToWishlistWithNonexistentItemIdTest() {
         WithMessageResponseModel errorResponseModel = step(format("Try to add item with id %s " + "to wishlist", INVALID_ITEM_ID), () ->
-                given(baseRequestWithTokenSpec)
+                given(baseRequestSpec)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()
                         .get("/v1/account/wishes/add_or_remove_wish_item/" + INVALID_ITEM_ID)
@@ -119,7 +119,7 @@ public class WishlistApiTests extends TestBase {
     @DisplayName("Check the response schema for successfully adding an item to the wishlist")
     void checkSuccessAddToWishlistSchemaTest() {
         step("Check schema of request", () ->
-                given(baseRequestWithTokenSpec)
+                given(baseRequestSpec)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()
                         .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID_2)
@@ -133,7 +133,7 @@ public class WishlistApiTests extends TestBase {
     @DisplayName("Failed to add item to wishlist without token")
     void failedAddToWishlistWithoutTokenTest() {
         WithMessageResponseModel errorResponseModel = step(format("Try to add item with id %s " + "to wishlist", VALID_ITEM_ID), () ->
-                given(baseRequestWithTokenSpec)
+                given(baseRequestSpec)
                         .when()
                         .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID)
                         .then()
@@ -151,7 +151,7 @@ public class WishlistApiTests extends TestBase {
             List<ItemModel> items = new ArrayList<ItemModel>();
             int page = 1;
             while (true) {
-                GetWishlistResponseModel response = given(baseRequestWithTokenSpec)
+                GetWishlistResponseModel response = given(baseRequestSpec)
                         .params("page", page)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()

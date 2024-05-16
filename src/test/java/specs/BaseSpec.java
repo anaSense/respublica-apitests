@@ -19,14 +19,6 @@ public class BaseSpec {
             .log().headers()
             .contentType(ContentType.JSON);
 
-    public static RequestSpecification baseRequestWithTokenSpec = with()
-            .filter(withCustomTemplates())
-            .log().uri()
-            .log().method()
-            .log().body()
-            .log().headers()
-            .contentType(ContentType.JSON);
-
     public static ResponseSpecification baseSuccessResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .log(LogDetail.STATUS)
