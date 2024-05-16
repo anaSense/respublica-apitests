@@ -11,10 +11,9 @@ import org.junit.jupiter.api.BeforeAll;
 
 public class TestBase {
 
-    static private BaseConfigProvider configProvider = new BaseConfigProvider();
-
     @BeforeAll
     public static void beforeAll() {
+        BaseConfigProvider configProvider = new BaseConfigProvider();
         configProvider.configure();
         AuthConfig authConfig = ConfigFactory.create(AuthConfig.class, System.getProperties());
 

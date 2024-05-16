@@ -2,9 +2,10 @@ package tests;
 
 import io.qameta.allure.*;
 import models.*;
+import models.bodies.ReceiverBodyModel;
 import models.responses.AuthResponseModel;
 import models.responses.ErrorResponseModel;
-import models.responses.WithMessageResponseModel;
+import models.responses.BaseResponseWithMessageModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,7 +38,7 @@ public class AddReceiverApiTests extends TestBase {
         String phone = randomUtils.getPhoneNumber();
         String title = randomUtils.getTitle();
 
-        AddReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
+        ReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
 
         AuthResponseModel response = step("Add new receiver to profile", () -> {
             AuthResponseModel responseModel =
@@ -75,16 +76,16 @@ public class AddReceiverApiTests extends TestBase {
     @ParameterizedTest(name = "Failed to add new receiver with empty combination of body fields " + "email = {0}, name = {1}, phone = {2}, title = {3}")
     @CsvFileSource(resources = "/test_data/pairwiseTestsFailedAddReceiver.csv", delimiter = '|')
     void failedAddReceiverWithEmptyBodyFields(String email, String name, String phone, String title, String errorText) {
-        AddReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
+        ReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
 
-        WithMessageResponseModel response = step("Try to add new receiver to profile", () ->
+        BaseResponseWithMessageModel response = step("Try to add new receiver to profile", () ->
                 given(baseRequestSpec).body(model)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()
                         .post("/v1/account/receivers")
                         .then()
                         .spec(baseSuccessResponseSpec)
-                        .extract().as(WithMessageResponseModel.class));
+                        .extract().as(BaseResponseWithMessageModel.class));
 
         step("Check the error was shown " + errorText, () -> {
             assertThat(response.isSuccess()).isFalse();
@@ -96,7 +97,7 @@ public class AddReceiverApiTests extends TestBase {
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Failed to add receiver to user's profile with null body")
     void failedAddReceiverWithWrongBodyFields() {
-        AddReceiverBodyModel model = new AddReceiverBodyModel();
+        ReceiverBodyModel model = new ReceiverBodyModel();
 
         ErrorResponseModel response = step("Try to add new receiver to profile", () ->
                 given(baseRequestSpec)
@@ -122,16 +123,16 @@ public class AddReceiverApiTests extends TestBase {
         String phone = randomUtils.getPhoneNumber();
         String title = randomUtils.getTitle();
 
-        AddReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
+        ReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
 
-        WithMessageResponseModel response = step("Try to add new receiver to profile", () ->
+        BaseResponseWithMessageModel response = step("Try to add new receiver to profile", () ->
                 given(baseRequestSpec)
                         .body(model)
                         .when()
                         .post("/v1/account/receivers")
                         .then()
                         .spec(baseResponseUnauthorizedErrorSpec)
-                        .extract().as(WithMessageResponseModel.class));
+                        .extract().as(BaseResponseWithMessageModel.class));
 
         step("Check the unauthorized error was shown ", () -> {
             assertThat(response.isSuccess()).isFalse();
@@ -147,7 +148,7 @@ public class AddReceiverApiTests extends TestBase {
         String name = randomUtils.getName();
         String phone = randomUtils.getPhoneNumber();
         String title = randomUtils.getTitle();
-        AddReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
+        ReceiverBodyModel model = fillBodyModelByValid(email, name, phone, title);
 
         step("Check schema of request", () ->
                 given(baseRequestSpec)
@@ -160,8 +161,8 @@ public class AddReceiverApiTests extends TestBase {
                         .body(matchesJsonSchemaInClasspath("schemas/success_add_receiver.json")));
     }
 
-    private AddReceiverBodyModel fillBodyModelByValid(String email, String name, String phone, String title) {
-        AddReceiverBodyModel model = new AddReceiverBodyModel();
+    private ReceiverBodyModel fillBodyModelByValid(String email, String name, String phone, String title) {
+        ReceiverBodyModel model = new ReceiverBodyModel();
         ReceiverAttributesModel receiverModel = new ReceiverAttributesModel();
         receiverModel.setEmail(email);
         receiverModel.setName(name);
