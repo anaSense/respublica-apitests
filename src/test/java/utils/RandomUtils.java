@@ -10,7 +10,6 @@ public class RandomUtils {
 
     public String getTitle() {
         return faker.harryPotter().spell();
-        //return faker.lorem().characters(5,10);
     }
 
     public String getName() {
