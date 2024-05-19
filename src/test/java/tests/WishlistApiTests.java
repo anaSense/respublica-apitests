@@ -25,7 +25,7 @@ public class WishlistApiTests extends TestBase {
 
     @Test
     @Severity(SeverityLevel.CRITICAL)
-    @DisplayName("Successfully add item to wishlist")
+    @DisplayName("Successful addition of item to wishlist")
     void successfullyAddItemToWishlistTest() {
         boolean isExist = checkIsItemWithIdExistInWishlist(VALID_ITEM_ID);
         if (isExist)
