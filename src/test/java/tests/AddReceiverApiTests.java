@@ -1,5 +1,6 @@
 package tests;
 
+import data.ErrorMessages;
 import io.qameta.allure.*;
 import models.*;
 import models.bodies.ReceiverBodyModel;
@@ -14,8 +15,6 @@ import utils.RandomUtils;
 
 import java.util.List;
 
-import static data.TestDataConstants.BAD_REQUEST_ERROR;
-import static data.TestDataConstants.UNAUTHORIZED_ERROR;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -104,7 +103,7 @@ public class AddReceiverApiTests extends TestBase {
                         .extract().as(ErrorResponseModel.class));
 
         step("Check the error was shown ", () -> {
-            assertThat(response.getError()).isEqualTo(BAD_REQUEST_ERROR);
+            assertThat(response.getError()).isEqualTo(ErrorMessages.BAD_REQUEST_ERROR.getMessage());
         });
     }
 
@@ -131,7 +130,7 @@ public class AddReceiverApiTests extends TestBase {
 
         step("Check the unauthorized error was shown ", () -> {
             assertThat(response.isSuccess()).isFalse();
-            assertThat(response.getMessage()).isEqualTo(UNAUTHORIZED_ERROR);
+            assertThat(response.getMessage()).isEqualTo(ErrorMessages.UNAUTHORIZED_ERROR.getMessage());
         });
     }
 
