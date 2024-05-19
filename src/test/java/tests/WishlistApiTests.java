@@ -28,18 +28,11 @@ public class WishlistApiTests extends TestBase {
     @DisplayName("Successfully add item to wishlist")
     void successfullyAddItemToWishlistTest() {
         boolean isExist = checkIsItemWithIdExistInWishlist(VALID_ITEM_ID);
+        if (isExist)
+            prepareForAddRemoveWishlistActions(VALID_ITEM_ID, "add");
 
-        if (isExist) {
-            step(format("Prepare for testing, remove item %s from wishlist if it exist", VALID_ITEM_ID), () ->
-                    given(baseRequestSpec)
-                            .header("JWT-Auth-Token", System.getProperty("authToken"))
-                            .when()
-                            .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID)
-                            .then()
-                            .spec(baseSuccessResponseSpec));
-        }
-
-        BaseResponseWithMessageModel response = step(format("Add item with id %s " + "to wishlist", VALID_ITEM_ID), () ->
+        BaseResponseWithMessageModel response = step(format("Add item with id %s "
+                + "to wishlist", VALID_ITEM_ID), () ->
                 given(baseRequestSpec)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()
@@ -64,18 +57,11 @@ public class WishlistApiTests extends TestBase {
     @DisplayName("Successful removal of item from wishlist")
     void successfullyRemoveItemFromWishlistTest() {
         boolean isExist = checkIsItemWithIdExistInWishlist(VALID_ITEM_ID_2);
+        if (!isExist)
+            prepareForAddRemoveWishlistActions(VALID_ITEM_ID_2, "remove");
 
-        if (!isExist) {
-            step(format("Prepare for testing, add item %s to wishlist if not already present", VALID_ITEM_ID_2), () ->
-                    given(baseRequestSpec)
-                            .header("JWT-Auth-Token", System.getProperty("authToken"))
-                            .when()
-                            .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID_2)
-                            .then()
-                            .spec(baseSuccessResponseSpec));
-        }
-
-        BaseResponseWithMessageModel response = step(format("Remove item with id %s " + "from wishlist", VALID_ITEM_ID_2), () ->
+        BaseResponseWithMessageModel response = step(format("Remove item with id %s "
+                + "from wishlist", VALID_ITEM_ID_2), () ->
                 given(baseRequestSpec)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()
@@ -99,13 +85,15 @@ public class WishlistApiTests extends TestBase {
     @Severity(SeverityLevel.NORMAL)
     @DisplayName("Failed to add item with non-existent id to wishlist")
     void failedAddToWishlistWithNonexistentItemIdTest() {
-        BaseResponseWithMessageModel errorResponseModel = step(format("Try to add item with id %s " + "to wishlist", INVALID_ITEM_ID), () ->
+        BaseResponseWithMessageModel errorResponseModel = step(format("Try to add item with id %s "
+                + "to wishlist", INVALID_ITEM_ID), () ->
                 given(baseRequestSpec)
                         .header("JWT-Auth-Token", System.getProperty("authToken"))
                         .when()
                         .get("/v1/account/wishes/add_or_remove_wish_item/" + INVALID_ITEM_ID)
                         .then()
-                        .spec(baseResponseNotFoundErrorSpec)
+                        .statusCode(404)
+                        .spec(baseResponseLoggerSpec)
                         .extract().as(BaseResponseWithMessageModel.class));
 
         step("Сheck that the error was shown", () -> {
@@ -138,7 +126,8 @@ public class WishlistApiTests extends TestBase {
                         .when()
                         .get("/v1/account/wishes/add_or_remove_wish_item/" + VALID_ITEM_ID)
                         .then()
-                        .spec(baseResponseUnauthorizedErrorSpec)
+                        .statusCode(401)
+                        .spec(baseResponseLoggerSpec)
                         .extract().as(BaseResponseWithMessageModel.class));
 
         step("Сheck that the unauthorized error was shown", () -> {
@@ -164,11 +153,19 @@ public class WishlistApiTests extends TestBase {
                 page++;
                 if (response.getPagination().getNext() == 0) break;
             }
-            for (ItemModel item : items) {
-                if (item.getId().equals(id)) return true;
-            }
-            return false;
+            return items.stream()
+                    .anyMatch(item -> item.getId().equals(id));
         });
+    }
+
+    private void prepareForAddRemoveWishlistActions(String item, String action) {
+        step(format("Prepare for testing, %s item %s wishlist if it exist", action, item), () ->
+                given(baseRequestSpec)
+                        .header("JWT-Auth-Token", System.getProperty("authToken"))
+                        .when()
+                        .get("/v1/account/wishes/add_or_remove_wish_item/" + item)
+                        .then()
+                        .spec(baseSuccessResponseSpec));
     }
 }
 

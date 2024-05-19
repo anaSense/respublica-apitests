@@ -25,21 +25,9 @@ public class BaseSpec {
             .log(LogDetail.BODY)
             .build();
 
-    public static ResponseSpecification baseResponseWithBadRequestErrorSpec = new ResponseSpecBuilder()
-            .expectStatusCode(400)
+    public static ResponseSpecification baseResponseLoggerSpec = new ResponseSpecBuilder()
             .log(LogDetail.STATUS)
             .log(LogDetail.BODY)
             .build();
 
-    public static ResponseSpecification baseResponseUnauthorizedErrorSpec = new ResponseSpecBuilder()
-            .expectStatusCode(401)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
-            .build();
-
-    public static ResponseSpecification baseResponseNotFoundErrorSpec = new ResponseSpecBuilder()
-            .expectStatusCode(404)
-            .log(LogDetail.STATUS)
-            .log(LogDetail.BODY)
-            .build();
 }

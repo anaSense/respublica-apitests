@@ -57,17 +57,10 @@ public class AddReceiverApiTests extends TestBase {
             List<ReceiverModel> receivers = response.getUser().getUserData()
                     .getAttributes().getReceiverModel().getReceivers();
             assertThat(receivers.size()).isNotZero();
-            boolean isExist = false;
-            for (ReceiverModel receiver : receivers) {
-                ReceiverAttributesModel receiverAttributes = receiver.getAttributes();
-                if (receiverAttributes.getEmail().equals(email)
-                        && receiverAttributes.getName().equals(name)
-                        && receiverAttributes.getPhone().equals(phone)
-                        && receiverAttributes.getTitle().equals(title)) {
-                    isExist = true;
-                    break;
-                }
-            }
+            boolean isExist = receivers.stream().anyMatch(receiver -> receiver.getAttributes().getEmail().equals(email)
+                            && receiver.getAttributes().getName().equals(name)
+                            && receiver.getAttributes().getPhone().equals(phone)
+                            && receiver.getAttributes().getTitle().equals(title));
             assertThat(isExist).isTrue();
         });
     }
@@ -106,7 +99,8 @@ public class AddReceiverApiTests extends TestBase {
                         .when()
                         .post("/v1/account/receivers")
                         .then()
-                        .spec(baseResponseWithBadRequestErrorSpec)
+                        .statusCode(400)
+                        .spec(baseResponseLoggerSpec)
                         .extract().as(ErrorResponseModel.class));
 
         step("Check the error was shown ", () -> {
@@ -131,7 +125,8 @@ public class AddReceiverApiTests extends TestBase {
                         .when()
                         .post("/v1/account/receivers")
                         .then()
-                        .spec(baseResponseUnauthorizedErrorSpec)
+                        .statusCode(401)
+                        .spec(baseResponseLoggerSpec)
                         .extract().as(BaseResponseWithMessageModel.class));
 
         step("Check the unauthorized error was shown ", () -> {

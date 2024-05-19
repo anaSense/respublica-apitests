@@ -26,7 +26,7 @@ public class AuthToken {
                         .then()
                         .spec(baseSuccessResponseSpec)
                         .extract().as(AuthResponseModel.class));
-        assertThat(response.getToken()).isNotNull();
+        assertThat(response.getToken()).isAlphanumeric().hasSizeGreaterThan(5);
         return response;
     }
 }
