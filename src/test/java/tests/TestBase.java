@@ -17,6 +17,8 @@ public class TestBase {
 
     @BeforeAll
     public static void beforeAll() {
+        PropertyReader.readPropertyFile(constantsProperties, "test_data/testData.properties");
+
         BaseConfigProvider configProvider = new BaseConfigProvider();
         configProvider.configure();
         AuthConfig authConfig = ConfigFactory.create(AuthConfig.class, System.getProperties());
